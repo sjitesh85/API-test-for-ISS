@@ -1,4 +1,7 @@
 import requests
+import folium
+import webbrowser
+import pathlib
 
 # Requesting the International Space station API
 response = requests.get(
@@ -53,3 +56,16 @@ else:
     country = address.get("country") or "Unknown"
 
 print(f"Location: {state}, {country}")
+
+
+# showing ISS on map
+
+m = folium.Map(location=[latitude, longitude], zoom_start=4)
+
+folium.Marker([latitude, longitude], popup=f"{state}, {country}").add_to(m)
+
+m.save("map.html")
+
+webbrowser.open(pathlib.Path("map.html").resolve().as_uri())
+
+print("Map opened in browser!")
